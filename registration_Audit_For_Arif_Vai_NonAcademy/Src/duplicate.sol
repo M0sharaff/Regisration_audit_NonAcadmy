@@ -71,7 +71,7 @@ contract UserRegistration is Ownable, ReentrancyGuard, Pausable {
         user.userId = totalUsers;
         user.referrerAddress = address(this);
         user.registrationTime = block.timestamp;
-        userAddresses[totalUsers] = msg.sender;//1 --> owner 
+        userAddresses[totalUsers] = msg.sender;
         user.username = "Admin";
 
         emit UserRegistered(
@@ -85,7 +85,7 @@ contract UserRegistration is Ownable, ReentrancyGuard, Pausable {
     event OwnershipRenounced(address indexed previousOwner);
 
     function renounceOwnership() public virtual override onlyOwner {
-        _transferOwnership(address(0));//@todo @ok internal doesnot revert .  check iif reverts ! 
+        _transferOwnership(address(0));//@todo check iif reverts ! 
         emit OwnershipRenounced(msg.sender);
     }
 
@@ -204,7 +204,7 @@ contract UserRegistration is Ownable, ReentrancyGuard, Pausable {
             uint256 referralCount,
             string memory username
         )
-    {//@audit both are same ! 
+    {
         address userAddress = userAddresses[_userId];
         if (userAddress == address(0)) revert UserNotFound();
 
@@ -219,26 +219,17 @@ contract UserRegistration is Ownable, ReentrancyGuard, Pausable {
             user.username
         );
     }
-
-        function getTotalReferralCount(address user)//@audit can create oog if number of users is too large ! 
+     
+    function getTotalReferralCount(address user)
         public
         view
         returns (uint256 directReferrals, uint256 totalReferrals)
     {
         directReferrals = users[user].referrals.length;
-        totalReferrals = countTotalReferrals(user);//@audit med can make txn go oog if called from contract 
+        totalReferrals = countTotalReferrals(user);
     }
 
-    function countTotalReferrals(address user) internal view returns (uint256) {//@ lead @ok loop ?? recursion works fine as the order is controlled ! 
-        uint256 totalReferrals = users[user].referrals.length;//@audit naming convention is poor ! 
-        
-        for (uint256 i = 0; i < users[user].referrals.length; i++) {
-            totalReferrals += countTotalReferrals(users[user].referrals[i]);
-        }
-        
-        return totalReferrals;
-    }
-
+ 
     function updateFeeCollector(address _newFeeCollector) external onlyOwner {
         if (_newFeeCollector == address(0)) revert InvalidAddress();
         feeCollector = _newFeeCollector;

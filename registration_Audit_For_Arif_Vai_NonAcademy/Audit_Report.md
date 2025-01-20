@@ -1,6 +1,6 @@
-# Titan Blaze Security Review
+# Registration Security Review
 
-A security review of the Titan Blaze protocol's smart contracts was done by [Mosh](https://x.com/I_am_0xMosh). \
+A security review of the Registration smart contract was done by [Mosh](https://x.com/I_am_0xMosh). \
 This audit report includes all the vulnerabilities, issues and code improvements found during the security review.
 
 ## Disclaimer
@@ -57,7 +57,7 @@ as possible. Audits can show the presence of vulnerabilities **but not their abs
 | Severity      |                                                     Count |
 | :------------ | --------------------------------------------------------: |
 | Critical risk |   0|
-| High risk     |       4 |
+| High risk     |       0 |
 | Medium risk   |     1 |
 | Low risk      |       0 |
 | Informational | 3 |
